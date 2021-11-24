@@ -1,4 +1,4 @@
-![Bot logo](https://cdn.discordapp.com/attachments/250226310926827520/913111652830961684/Kyouka_Rem.jpg)
+![Bot logo](https://cdn.discordapp.com/attachments/792675940156702740/913114539912994916/new_logo.jpg)
 # What is this 
 This is my multipurpose discord bot written in python which has all basic commands for music playing such as queue, loop, play, pause, resume etc.
 # What this bot can do 
