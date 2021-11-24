@@ -22,7 +22,7 @@ import time
 
 intents = discord.Intents().all()
 
-TOKEN = "OTA4OTU1MDc1NDgzOTUxMTA0.YY9QYQ.Kcq9D_9TjO-yEqHz9EE4b4aVSDI"
+TOKEN = "TOKEN HERE"
 client = commands.Bot(command_prefix="*",intents = intents)
 stop = 0
 vc = None
