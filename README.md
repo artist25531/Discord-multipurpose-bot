@@ -15,7 +15,7 @@ This is my multipurpose discord bot written in python which has all basic comman
  ## Future Plan
  
  6. [ ] Adjustable music volume
- 7. [ ] Skip music
+ 7. [x] Skip music
  8. [ ] Member chat level system
  9. [x] Roll a dice
  10. [ ] Auto role assign
