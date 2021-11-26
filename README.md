@@ -17,7 +17,7 @@ This is my multipurpose discord bot written in python which has all basic comman
  6. [ ] Adjustable music volume
  7. [ ] Skip music
  8. [ ] Member chat level system
- 9. [ ] Roll a dice
+ 9. [x] Roll a dice
  10. [ ] Auto role assign
  11. [ ] Logs
  12. [ ] Poll
