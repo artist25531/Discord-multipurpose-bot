@@ -21,7 +21,7 @@ This is my multipurpose discord bot written in python which has all basic comman
  10. [ ] Auto role assign
  11. [ ] Logs
  12. [ ] Poll
- 13. [ ]  Purging
+ 13. [x]  Purging
  14. [ ] Music control from emoji reaction
  15. [ ] Improve queuing system
  16. [ ] Anti spam
