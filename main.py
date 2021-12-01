@@ -23,7 +23,7 @@ import config
 intents = discord.Intents().all()
 
 TOKEN = config.TOKEN
-client = commands.Bot(command_prefix="*",intents = intents)
+client = commands.Bot(command_prefix=config.prefix,intents = intents)
 stop = 0
 vc = None
 is_loop = False
