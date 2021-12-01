@@ -60,7 +60,7 @@ async def call(ctx):
         x = u.mention 
         while stop == 0:
 
-            await ctx.send("CUM" + x)
+            await ctx.send("Come" + x)
             await asyncio.sleep(5)
 
 @client.command()
