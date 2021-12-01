@@ -191,7 +191,7 @@ async def stop(ctx):
 
 
 @client.command(brief = "play the youtube video", aliases=['play','sing','paly'])
-async def p(ctx): #,video_link:str
+async def p(ctx): 
     global is_loop
     global vc
     global queue_list
