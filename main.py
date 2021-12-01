@@ -18,11 +18,11 @@ import youtube_dl
 import validators
 from discord import embeds
 import time
-
+import config
 
 intents = discord.Intents().all()
 
-TOKEN = "TOKEN HERE"
+TOKEN = config.TOKEN
 client = commands.Bot(command_prefix="*",intents = intents)
 stop = 0
 vc = None
