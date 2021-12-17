@@ -20,11 +20,11 @@ import validators
 from discord import embeds
 import time
 from discord.ext.commands import has_permissions, MissingPermissions
-
+import config
 intents = discord.Intents().all()
 
-TOKEN = "OTA4OTU1MDc1NDgzOTUxMTA0.YY9QYQ.NtTctO2zR84AJCDxQMVlJaq56mg"
-client = commands.Bot(command_prefix="*",intents = intents)
+TOKEN = config.TOKEN
+client = commands.Bot(command_prefix=config.prefix,intents = intents)
 stop = 0
 vc = None
 is_loop = False
@@ -426,4 +426,3 @@ async def roll(ctx):
     embed.add_field(name="result", value=result, inline=False)
     await ctx.send(embed=embed)
 client.run(TOKEN)
-#
