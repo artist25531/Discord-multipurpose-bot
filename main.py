@@ -1,11 +1,12 @@
 from re import search
+import re
 from tokenize import triple_quoted
 import discord
 from discord import channel
 from discord import message, FFmpegAudio
 from discord.client import Client
 from discord.ext import commands
-from discord.ext.commands.core import after_invoke
+from discord.ext.commands.core import after_invoke, check, has_permissions
 from io import BytesIO
 import uuid
 import os
@@ -18,16 +19,20 @@ import youtube_dl
 import validators
 from discord import embeds
 import time
-import config
+from discord.ext.commands import has_permissions, MissingPermissions
 
 intents = discord.Intents().all()
 
-TOKEN = config.TOKEN
-client = commands.Bot(command_prefix=config.prefix,intents = intents)
+TOKEN = "OTA4OTU1MDc1NDgzOTUxMTA0.YY9QYQ.NtTctO2zR84AJCDxQMVlJaq56mg"
+client = commands.Bot(command_prefix="*",intents = intents)
 stop = 0
 vc = None
 is_loop = False
 queue_list = []
+is_skipping = False
+men_user = None
+now_del = 0
+limits = None
 
 
 def time_format(seconds: int):
@@ -61,7 +66,7 @@ async def call(ctx):
         while stop == 0:
 
             await ctx.send("Come" + x)
-            await asyncio.sleep(5)
+            await asyncio.sleep(3)
 
 @client.command()
 async def stoptag(ctx):
@@ -70,20 +75,39 @@ async def stoptag(ctx):
     await ctx.send("**__OK STOP__**")
 
 
-@client.command()
+@client.command(pass_context=True)
+@commands.has_guild_permissions(mute_members=True)
 async def mute(ctx):
     for u in ctx.message.mentions:
 
         await ctx.send("You have been muted!" + u.mention)
         await u.edit(mute = True)
 
+@mute.error
+async def mute_error(ctx,error):
+    print(error)
+    print(type(error))
+    if isinstance(error, MissingPermissions):
+        text = "Sorry {}, you do not have permissions to mute!".format(ctx.message.author.mention)
+        await ctx.send(text)
 
-@client.command()
+
+@client.command(pass_context=True)
+@commands.has_guild_permissions(mute_members=True)
 async def unmute(ctx):
     for u in ctx.message.mentions:
 
         await ctx.send("You have been release!" + u.mention)
         await u.edit(mute = False)
+
+
+@unmute.error
+async def mute_error(ctx,error):
+    print(error)
+    print(type(error))
+    if isinstance(error, MissingPermissions):
+        text = "Sorry {}, you do not have permissions to unmute!".format(ctx.message.author.mention)
+        await ctx.send(text)
 
 
 @client.command()
@@ -191,11 +215,11 @@ async def stop(ctx):
 
 
 @client.command(brief = "play the youtube video", aliases=['play','sing','paly'])
-async def p(ctx): 
+async def p(ctx): #,video_link:str
     global is_loop
     global vc
     global queue_list
-    
+    global is_skipping
 
     video_link = ctx.message.clean_content.split(" ")
     video_link.pop(0)
@@ -251,8 +275,10 @@ async def p(ctx):
     embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/818876983567319110.gif?size=96")
     embed.add_field(name="queue_list number", value=str(len(queue_list)), inline=True)
     embed.add_field(name="duration", value=time_format(result["duration"]), inline=True)
+    embed.add_field(name="Requested by", value=ctx.author.mention, inline=False)
     embed.set_footer(text="Acknowledged.",icon_url="https://cdn.discordapp.com/emojis/734349790803918848.gif?size=96")
     await ctx.send(embed=embed)
+    await ctx.message.delete()
     if vc==None or not (vc.is_playing() or vc.is_paused()):
         voice_channel = ctx.author.voice.channel
         vc = await voice_channel.connect()
@@ -260,7 +286,7 @@ async def p(ctx):
             current_song = queue_list.pop(0)
             embed=discord.Embed(title=str("Now playing " + current_song[0]["title"]), url=str("https://youtu.be/"+ current_song[0]["id"]), description=("Duration: " +time_format(current_song[0]["duration"]) ), color=0x00b3ff)
             embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/739616791084400701.gif?size=96")
-            embed.set_footer(text="Emjoy your music ☺☺♪",icon_url="https://cdn.discordapp.com/emojis/837319797128953878.png?size=96")
+            embed.set_footer(text="Enjoy your music ☺☺♪",icon_url="https://cdn.discordapp.com/emojis/837319797128953878.png?size=96")
             await ctx.send(embed=embed)
             current_URL = current_song[1]
             FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
@@ -364,4 +390,40 @@ async def queue(ctx):
     embed.set_footer(text="Enjoy your day.",icon_url="https://cdn.discordapp.com/emojis/755794386650005596.gif?size=96")
     await ctx.send(embed=embed)
 
+
+@client.command()
+async def skip(ctx):
+    global vc
+    vc.stop()
+    ctx.send("Skipped!")
+    await ctx.message.delete()
+
+def check_mention(m):
+    global men_user
+    global now_del
+    global limits
+    if m.author in men_user:
+        now_del += 1
+        if now_del <= limits:
+            return 1
+    return 0
+
+@client.command()
+async def clean(ctx, limit: int):
+    global men_user
+    global limits
+    limits = limit
+    men_user = ctx.message.mentions
+    deleted = await ctx.channel.purge(limit = 100,check=check_mention)
+
+
+@client.command()
+async def roll(ctx):
+    img_url = ["https://media.discordapp.net/attachments/250226310926827520/913783446441197628/unknown.png","https://media.discordapp.net/attachments/250226310926827520/913784154112548874/unknown.png","https://cdn.discordapp.com/attachments/250226310926827520/913784196529520660/unknown.png","https://media.discordapp.net/attachments/250226310926827520/913784239156264970/unknown.png","https://cdn.discordapp.com/attachments/250226310926827520/913784279497060393/unknown.png","https://cdn.discordapp.com/attachments/250226310926827520/913784332911530084/unknown.png"]
+    result = (random.randint(1,6))
+    embed=discord.Embed(title="Roll Result", color=0x00ccff)
+    embed.set_thumbnail(url=img_url[result-1])
+    embed.add_field(name="result", value=result, inline=False)
+    await ctx.send(embed=embed)
 client.run(TOKEN)
+#
