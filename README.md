@@ -25,7 +25,7 @@ This is my multipurpose discord bot written in python which has all basic comman
  14. [ ] Music control from emoji reaction
  15. [ ] Improve queuing system
  16. [ ] Anti spam
- 17. [ ] Bot logo
+ 17. [x] Bot logo
  18. [ ] Auto pull user from one voice channel to another
 ## How to use
  1. Open main.py
