@@ -1,4 +1,4 @@
-![Bot logo](https://cdn.discordapp.com/emojis/761257886755323904.png) 
+![Bot logo](https://media.discordapp.net/attachments/250226310926827520/921742144887218216/Blue_Black_Modern_Business_Consulting_Company_Logo.png) 
 
 # Rex Bot
 
