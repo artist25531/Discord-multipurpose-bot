@@ -27,6 +27,7 @@ This is my multipurpose discord bot written in python which has all basic comman
  16. [ ] Anti spam
  17. [x] Bot logo
  18. [ ] Auto pull user from one voice channel to another
+ 19. [ ] Slash command
 ## How to use
  1. Open main.py
  2. Edit Token in line 25 to your token.
